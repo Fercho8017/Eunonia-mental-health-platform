@@ -1,39 +1,107 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Brain, Heart, Shield, Users, MessageCircle, BarChart3, Calendar, Star } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Brain, MessageCircle, Calendar, BarChart3, Shield, Star, ArrowRight } from "lucide-react"
 import Link from "next/link"
-import { ImageSection } from "@/components/image-section"
 import { HeroWithVideo } from "@/components/hero-with-video"
+import { ImageSection } from "@/components/image-section"
 
-export default function LandingPage() {
+export default function HomePage() {
+  const features = [
+    {
+      icon: MessageCircle,
+      title: "Chatbot IA 24/7",
+      description: "Asistente inteligente disponible en todo momento para apoyo inmediato y orientación personalizada.",
+    },
+    {
+      icon: Calendar,
+      title: "Citas con Profesionales",
+      description: "Agenda sesiones con psicólogos certificados según tu disponibilidad y necesidades específicas.",
+    },
+    {
+      icon: BarChart3,
+      title: "Seguimiento de Progreso",
+      description: "Monitorea tu bienestar mental con herramientas de análisis y reportes detallados de tu evolución.",
+    },
+    {
+      icon: Shield,
+      title: "Privacidad Garantizada",
+      description: "Tus datos están protegidos con los más altos estándares de seguridad y confidencialidad médica.",
+    },
+  ]
+
+  const steps = [
+    {
+      number: "01",
+      title: "Registro Personalizado",
+      description: "Crea tu perfil y completa una evaluación inicial para personalizar tu experiencia de bienestar.",
+    },
+    {
+      number: "02",
+      title: "Conexión Inteligente",
+      description: "Nuestro algoritmo te conecta con el psicólogo más adecuado según tus necesidades específicas.",
+    },
+    {
+      number: "03",
+      title: "Apoyo Continuo",
+      description:
+        "Recibe seguimiento constante a través de sesiones programadas y nuestro chatbot IA disponible 24/7.",
+    },
+  ]
+
+  const testimonials = [
+    {
+      name: "María González",
+      role: "Paciente",
+      content:
+        "Eunonia me ayudó a encontrar el apoyo que necesitaba. El chatbot IA está siempre disponible y mi psicóloga es increíble.",
+      rating: 5,
+    },
+    {
+      name: "Dr. Carlos Ruiz",
+      role: "Psicólogo",
+      content:
+        "Como profesional, las herramientas de análisis de Eunonia me permiten brindar un mejor seguimiento a mis pacientes.",
+      rating: 5,
+    },
+    {
+      name: "Ana Martínez",
+      role: "Paciente",
+      content: "La plataforma es muy fácil de usar y me siento segura sabiendo que mis datos están protegidos.",
+      rating: 5,
+    },
+  ]
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Brain className="h-8 w-8 text-purple-600" />
-            <span className="text-2xl font-bold text-gray-900">Eunonia</span>
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-2">
+              <Brain className="h-8 w-8 text-purple-600" />
+              <span className="text-xl font-bold text-gray-900">Eunonia</span>
+            </div>
+            <div className="hidden md:flex items-center space-x-8">
+              <a href="#features" className="text-gray-600 hover:text-purple-600 transition-colors">
+                Características
+              </a>
+              <a href="#how-it-works" className="text-gray-600 hover:text-purple-600 transition-colors">
+                Cómo Funciona
+              </a>
+              <a href="#testimonials" className="text-gray-600 hover:text-purple-600 transition-colors">
+                Testimonios
+              </a>
+              <Button asChild variant="outline">
+                <Link href="/auth/login">Iniciar Sesión</Link>
+              </Button>
+              <Button asChild>
+                <Link href="/auth/register">Registrarse</Link>
+              </Button>
+            </div>
           </div>
-          <nav className="hidden md:flex items-center space-x-6">
-            <a href="#features" className="text-gray-600 hover:text-purple-600 transition-colors">
-              Características
-            </a>
-            <a href="#how-it-works" className="text-gray-600 hover:text-purple-600 transition-colors">
-              Cómo Funciona
-            </a>
-            <a href="#testimonials" className="text-gray-600 hover:text-purple-600 transition-colors">
-              Testimonios
-            </a>
-            <Link href="/auth/login">
-              <Button variant="outline">Iniciar Sesión</Button>
-            </Link>
-            <Link href="/auth/register">
-              <Button>Comenzar Gratis</Button>
-            </Link>
-          </nav>
         </div>
-      </header>
+      </nav>
 
       {/* Hero Section */}
       <HeroWithVideo />
@@ -41,293 +109,240 @@ export default function LandingPage() {
       {/* Features Section */}
       <section
         id="features"
-        className="py-20 px-4 relative"
+        className="py-20 relative"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), url(/images/features-background.png)",
+          backgroundImage: `url('/images/mental-wellness.png')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
         }}
       >
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Características Principales</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Herramientas avanzadas diseñadas para pacientes, psicólogos y administradores
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/95 to-purple-50/95"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16 animate-fadeInUp">
+            <Badge variant="secondary" className="mb-4">
+              Características Principales
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Todo lo que Necesitas para tu Bienestar Mental
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Nuestra plataforma combina tecnología avanzada con atención humana profesional para ofrecerte el mejor
+              cuidado de salud mental.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
-              <CardHeader>
-                <MessageCircle className="h-12 w-12 text-purple-600 mb-4" />
-                <CardTitle>Chatbot IA Especializado</CardTitle>
-                <CardDescription>
-                  Asistente inteligente disponible 24/7 para apoyo emocional y orientación inicial
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
-              <CardHeader>
-                <BarChart3 className="h-12 w-12 text-blue-600 mb-4" />
-                <CardTitle>Análisis Predictivo</CardTitle>
-                <CardDescription>
-                  Machine Learning para identificar patrones y predecir necesidades de bienestar
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
-              <CardHeader>
-                <Users className="h-12 w-12 text-green-600 mb-4" />
-                <CardTitle>Gestión Multi-Usuario</CardTitle>
-                <CardDescription>
-                  Plataforma integrada para pacientes, psicólogos y administradores del sistema
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
-              <CardHeader>
-                <Calendar className="h-12 w-12 text-orange-600 mb-4" />
-                <CardTitle>Seguimiento Personalizado</CardTitle>
-                <CardDescription>Monitoreo continuo del estado emocional y progreso terapéutico</CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
-              <CardHeader>
-                <Shield className="h-12 w-12 text-red-600 mb-4" />
-                <CardTitle>Privacidad Garantizada</CardTitle>
-                <CardDescription>Máxima seguridad y confidencialidad en el manejo de datos sensibles</CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
-              <CardHeader>
-                <Brain className="h-12 w-12 text-purple-600 mb-4" />
-                <CardTitle>Terapia Asistida por IA</CardTitle>
-                <CardDescription>
-                  Herramientas inteligentes que potencian la efectividad de las sesiones terapéuticas
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section
-        id="how-it-works"
-        className="py-20 px-4 relative"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(249, 250, 251, 0.95), rgba(249, 250, 251, 0.95)), url(/images/how-it-works-bg.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Cómo Funciona Eunonia</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Un proceso simple y efectivo para tu bienestar mental
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center animate-fade-in-up">
-              <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-purple-600">1</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-4">Registro y Evaluación</h3>
-              <p className="text-gray-600">
-                Crea tu perfil y completa una evaluación inicial para personalizar tu experiencia
-              </p>
-            </div>
-
-            <div className="text-center animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-blue-600">2</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-4">Interacción con IA</h3>
-              <p className="text-gray-600">Conversa con nuestro chatbot especializado y recibe apoyo personalizado</p>
-            </div>
-
-            <div className="text-center animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
-              <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-green-600">3</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-4">Seguimiento y Mejora</h3>
-              <p className="text-gray-600">Monitorea tu progreso y recibe recomendaciones basadas en ML</p>
-            </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <Card
+                key={index}
+                className="text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white/90 backdrop-blur-sm"
+              >
+                <CardHeader>
+                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <feature.icon className="h-8 w-8 text-purple-600" />
+                  </div>
+                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-gray-600">{feature.description}</CardDescription>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Image Sections */}
-      <ImageSection
-        title="Terapia Profesional Personalizada"
-        description="Nuestros psicólogos certificados utilizan las últimas técnicas terapéuticas combinadas con inteligencia artificial para ofrecerte un tratamiento personalizado y efectivo. Cada sesión está diseñada específicamente para tus necesidades y objetivos de bienestar mental."
-        imageSrc="/images/therapy-session.png"
-        imageAlt="Sesión de terapia profesional en ambiente cálido y acogedor"
-      />
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+          <ImageSection
+            title="Terapia Profesional Personalizada"
+            description="Conectamos con psicólogos certificados que entienden tus necesidades específicas. Cada sesión está diseñada para ayudarte a alcanzar tus objetivos de bienestar mental con un enfoque personalizado y basado en evidencia."
+            imageSrc="/images/professional-therapy.png"
+            imageAlt="Sesión de terapia profesional"
+          >
+            <div className="flex flex-wrap gap-2 mt-4">
+              <Badge variant="secondary">Psicólogos Certificados</Badge>
+              <Badge variant="secondary">Terapia Personalizada</Badge>
+              <Badge variant="secondary">Enfoque Basado en Evidencia</Badge>
+            </div>
+          </ImageSection>
 
-      <ImageSection
-        title="Mindfulness y Bienestar Integral"
-        description="Descubre el poder de la atención plena y las técnicas de relajación guiadas por IA. Nuestras herramientas de mindfulness te ayudan a desarrollar una mayor conciencia emocional y a encontrar la paz interior en tu día a día."
-        imageSrc="/images/mindfulness-meditation.png"
-        imageAlt="Persona practicando mindfulness en entorno natural y sereno"
-        reverse={true}
-      />
+          <ImageSection
+            title="Mindfulness y Bienestar Integral"
+            description="Incorporamos técnicas de mindfulness y meditación en tu proceso de sanación. Nuestras herramientas te ayudan a desarrollar una mayor conciencia emocional y a encontrar paz interior en tu día a día."
+            imageSrc="/images/mindfulness-nature.png"
+            imageAlt="Práctica de mindfulness en la naturaleza"
+            reverse={true}
+          >
+            <div className="flex flex-wrap gap-2 mt-4">
+              <Badge variant="secondary">Meditación Guiada</Badge>
+              <Badge variant="secondary">Técnicas de Relajación</Badge>
+              <Badge variant="secondary">Bienestar Integral</Badge>
+            </div>
+          </ImageSection>
+        </div>
+      </section>
 
-      {/* Testimonials */}
+      {/* How It Works Section */}
       <section
-        id="testimonials"
-        className="py-20 px-4 relative"
+        id="how-it-works"
+        className="py-20 relative"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url(/images/testimonials-bg.png)",
+          backgroundImage: `url('/images/digital-health.png')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
         }}
       >
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Lo Que Dicen Nuestros Usuarios</h2>
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 to-blue-900/90"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16 animate-fadeInUp">
+            <Badge variant="secondary" className="mb-4 bg-white/20 text-white border-white/30">
+              Proceso Simple
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Cómo Funciona Eunonia</h2>
+            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+              En solo tres pasos simples, puedes comenzar tu camino hacia el bienestar mental con el apoyo de
+              profesionales y tecnología avanzada.
+            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-0 shadow-lg card-hover">
-              <CardContent className="pt-6">
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
+            {steps.map((step, index) => (
+              <div key={index} className="text-center animate-fadeInUp" style={{ animationDelay: `${index * 0.2}s` }}>
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold text-white">
+                  {step.number}
                 </div>
-                <p className="text-gray-600 mb-4">
-                  "Eunonia me ha ayudado enormemente a gestionar mi ansiedad. El chatbot está disponible cuando más lo
-                  necesito."
-                </p>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-purple-600 font-semibold">M</span>
-                  </div>
-                  <div>
-                    <p className="font-semibold">María González</p>
-                    <p className="text-sm text-gray-500">Paciente</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                <h3 className="text-xl font-bold text-white mb-4">{step.title}</h3>
+                <p className="text-blue-100">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <Card className="border-0 shadow-lg card-hover">
-              <CardContent className="pt-6">
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-4">
-                  "Como psicólogo, las herramientas de análisis de Eunonia me permiten brindar un mejor seguimiento a
-                  mis pacientes."
-                </p>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-blue-600 font-semibold">D</span>
-                  </div>
-                  <div>
-                    <p className="font-semibold">Dr. Carlos Ruiz</p>
-                    <p className="text-sm text-gray-500">Psicólogo</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+      {/* Testimonials Section */}
+      <section
+        id="testimonials"
+        className="py-20 relative"
+        style={{
+          backgroundImage: `url('/images/support-community.png')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-white/95 to-blue-50/95"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16 animate-fadeInUp">
+            <Badge variant="secondary" className="mb-4">
+              Testimonios
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Lo que Dicen Nuestros Usuarios</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Miles de personas han encontrado el apoyo que necesitaban a través de nuestra plataforma. Estas son
+              algunas de sus experiencias.
+            </p>
+          </div>
 
-            <Card className="border-0 shadow-lg card-hover">
-              <CardContent className="pt-6">
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-4">
-                  "La plataforma es intuitiva y las funciones de administración facilitan enormemente la gestión del
-                  centro."
-                </p>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-green-600 font-semibold">A</span>
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card
+                key={index}
+                className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white/90 backdrop-blur-sm"
+              >
+                <CardHeader>
+                  <div className="flex items-center space-x-1 mb-2">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    ))}
                   </div>
-                  <div>
-                    <p className="font-semibold">Ana Martínez</p>
-                    <p className="text-sm text-gray-500">Administradora</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                  <CardTitle className="text-lg">{testimonial.name}</CardTitle>
+                  <CardDescription>{testimonial.role}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 italic">"{testimonial.content}"</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
       <section
-        className="py-20 px-4 relative overflow-hidden"
+        className="py-20 relative"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(147, 51, 234, 0.85), rgba(59, 130, 246, 0.85)), url(/images/cta-background.png)",
+          backgroundImage: `url('/images/new-beginnings.png')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
         }}
       >
-        <div className="container mx-auto text-center relative z-10">
-          <h2 className="text-4xl font-bold text-white mb-6">Comienza Tu Viaje Hacia el Bienestar</h2>
-          <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
-            Únete a miles de personas que ya han mejorado su salud mental con Eunonia
-          </p>
-          <Link href="/auth/register">
-            <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100">
-              Registrarse Gratis
-              <Heart className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 to-blue-900/90"></div>
+        <div className="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <div className="animate-fadeInUp">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              Comienza tu Camino hacia el Bienestar Mental Hoy
+            </h2>
+            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+              No esperes más para cuidar tu salud mental. Únete a miles de personas que ya han encontrado el apoyo que
+              necesitaban con Eunonia.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" className="bg-white text-purple-600 hover:bg-blue-50 text-lg px-8 py-4">
+                <Link href="/auth/register">
+                  Registrarse Gratis
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-white text-white hover:bg-white hover:text-purple-600 text-lg px-8 py-4 backdrop-blur-sm bg-transparent"
+              >
+                <Link href="/auth/login">Iniciar Sesión</Link>
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4">
-        <div className="container mx-auto">
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Brain className="h-8 w-8 text-purple-400" />
-                <span className="text-2xl font-bold">Eunonia</span>
+                <span className="text-xl font-bold">Eunonia</span>
               </div>
-              <p className="text-gray-400">
-                Plataforma de salud mental y bienestar personal con inteligencia artificial.
-              </p>
+              <p className="text-gray-400">Tu plataforma de confianza para el bienestar mental y la salud emocional.</p>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Producto</h3>
+              <h3 className="font-semibold mb-4">Servicios</h3>
               <ul className="space-y-2 text-gray-400">
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
-                    Características
+                    Terapia Online
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
-                    Precios
+                    Chatbot IA
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
-                    API
+                    Seguimiento
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Recursos
                   </a>
                 </li>
               </ul>
@@ -337,7 +352,7 @@ export default function LandingPage() {
               <ul className="space-y-2 text-gray-400">
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
-                    Documentación
+                    Centro de Ayuda
                   </a>
                 </li>
                 <li>
@@ -345,16 +360,6 @@ export default function LandingPage() {
                     Contacto
                   </a>
                 </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    FAQ
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Legal</h3>
-              <ul className="space-y-2 text-gray-400">
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
                     Privacidad
@@ -365,11 +370,14 @@ export default function LandingPage() {
                     Términos
                   </a>
                 </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Cookies
-                  </a>
-                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Contacto</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>soporte@eunonia.com</li>
+                <li>+1 (555) 123-4567</li>
+                <li>Disponible 24/7</li>
               </ul>
             </div>
           </div>

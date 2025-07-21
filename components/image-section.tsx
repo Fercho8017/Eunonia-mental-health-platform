@@ -1,3 +1,4 @@
+import type React from "react"
 import { Card, CardContent } from "@/components/ui/card"
 
 interface ImageSectionProps {
@@ -6,26 +7,24 @@ interface ImageSectionProps {
   imageSrc: string
   imageAlt: string
   reverse?: boolean
+  children?: React.ReactNode
 }
 
-export function ImageSection({ title, description, imageSrc, imageAlt, reverse = false }: ImageSectionProps) {
+export function ImageSection({ title, description, imageSrc, imageAlt, reverse = false, children }: ImageSectionProps) {
   return (
-    <section className="py-20 px-4 bg-white">
-      <div className="container mx-auto">
-        <div className={`grid lg:grid-cols-2 gap-12 items-center ${reverse ? "lg:grid-flow-col-dense" : ""}`}>
-          <div className={`space-y-6 ${reverse ? "lg:col-start-2" : ""}`}>
-            <h2 className="text-4xl font-bold text-gray-900">{title}</h2>
-            <p className="text-lg text-gray-600 leading-relaxed">{description}</p>
-          </div>
-          <div className={`${reverse ? "lg:col-start-1" : ""}`}>
-            <Card className="overflow-hidden shadow-2xl">
-              <CardContent className="p-0">
-                <img src={imageSrc || "/placeholder.svg"} alt={imageAlt} className="w-full h-96 object-cover" />
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+    <div className={`flex flex-col ${reverse ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-8 lg:gap-12`}>
+      <div className="flex-1 space-y-4">
+        <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
+        <p className="text-lg text-gray-600 leading-relaxed">{description}</p>
+        {children}
       </div>
-    </section>
+      <div className="flex-1">
+        <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <CardContent className="p-0">
+            <img src={imageSrc || "/placeholder.svg"} alt={imageAlt} className="w-full h-64 lg:h-80 object-cover" />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   )
 }
