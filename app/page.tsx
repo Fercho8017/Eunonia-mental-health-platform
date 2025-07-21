@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Brain, Heart, Shield, Users, MessageCircle, BarChart3, Calendar, Star } from "lucide-react"
 import Link from "next/link"
+import { ImageSection } from "@/components/image-section"
+import { HeroWithVideo } from "@/components/hero-with-video"
 
 export default function LandingPage() {
   return (
@@ -35,38 +36,20 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
-          <Badge className="mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200">
-            Plataforma de Salud Mental con IA
-          </Badge>
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            Tu bienestar mental es nuestra{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
-              prioridad
-            </span>
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Eunonia combina inteligencia artificial avanzada con atención profesional para ofrecerte una experiencia
-            personalizada de cuidado mental y bienestar emocional.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/auth/register">
-              <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
-                Comenzar Tu Viaje
-                <Heart className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Button size="lg" variant="outline">
-              Ver Demo
-              <MessageCircle className="ml-2 h-5 w-5" />
-            </Button>
-          </div>
-        </div>
-      </section>
+      <HeroWithVideo />
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-4 bg-white">
+      <section
+        id="features"
+        className="py-20 px-4 relative"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), url(/images/features-background.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Características Principales</h2>
@@ -76,7 +59,7 @@ export default function LandingPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
               <CardHeader>
                 <MessageCircle className="h-12 w-12 text-purple-600 mb-4" />
                 <CardTitle>Chatbot IA Especializado</CardTitle>
@@ -86,7 +69,7 @@ export default function LandingPage() {
               </CardHeader>
             </Card>
 
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
               <CardHeader>
                 <BarChart3 className="h-12 w-12 text-blue-600 mb-4" />
                 <CardTitle>Análisis Predictivo</CardTitle>
@@ -96,7 +79,7 @@ export default function LandingPage() {
               </CardHeader>
             </Card>
 
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
               <CardHeader>
                 <Users className="h-12 w-12 text-green-600 mb-4" />
                 <CardTitle>Gestión Multi-Usuario</CardTitle>
@@ -106,7 +89,7 @@ export default function LandingPage() {
               </CardHeader>
             </Card>
 
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
               <CardHeader>
                 <Calendar className="h-12 w-12 text-orange-600 mb-4" />
                 <CardTitle>Seguimiento Personalizado</CardTitle>
@@ -114,7 +97,7 @@ export default function LandingPage() {
               </CardHeader>
             </Card>
 
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
               <CardHeader>
                 <Shield className="h-12 w-12 text-red-600 mb-4" />
                 <CardTitle>Privacidad Garantizada</CardTitle>
@@ -122,7 +105,7 @@ export default function LandingPage() {
               </CardHeader>
             </Card>
 
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow feature-card">
               <CardHeader>
                 <Brain className="h-12 w-12 text-purple-600 mb-4" />
                 <CardTitle>Terapia Asistida por IA</CardTitle>
@@ -136,7 +119,17 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="py-20 px-4 bg-gray-50">
+      <section
+        id="how-it-works"
+        className="py-20 px-4 relative"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(249, 250, 251, 0.95), rgba(249, 250, 251, 0.95)), url(/images/how-it-works-bg.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Cómo Funciona Eunonia</h2>
@@ -146,7 +139,7 @@ export default function LandingPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
+            <div className="text-center animate-fade-in-up">
               <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-purple-600">1</span>
               </div>
@@ -156,7 +149,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="text-center">
+            <div className="text-center animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
               <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-blue-600">2</span>
               </div>
@@ -164,7 +157,7 @@ export default function LandingPage() {
               <p className="text-gray-600">Conversa con nuestro chatbot especializado y recibe apoyo personalizado</p>
             </div>
 
-            <div className="text-center">
+            <div className="text-center animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
               <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-green-600">3</span>
               </div>
@@ -175,15 +168,41 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Image Sections */}
+      <ImageSection
+        title="Terapia Profesional Personalizada"
+        description="Nuestros psicólogos certificados utilizan las últimas técnicas terapéuticas combinadas con inteligencia artificial para ofrecerte un tratamiento personalizado y efectivo. Cada sesión está diseñada específicamente para tus necesidades y objetivos de bienestar mental."
+        imageSrc="/images/therapy-session.png"
+        imageAlt="Sesión de terapia profesional en ambiente cálido y acogedor"
+      />
+
+      <ImageSection
+        title="Mindfulness y Bienestar Integral"
+        description="Descubre el poder de la atención plena y las técnicas de relajación guiadas por IA. Nuestras herramientas de mindfulness te ayudan a desarrollar una mayor conciencia emocional y a encontrar la paz interior en tu día a día."
+        imageSrc="/images/mindfulness-meditation.png"
+        imageAlt="Persona practicando mindfulness en entorno natural y sereno"
+        reverse={true}
+      />
+
       {/* Testimonials */}
-      <section id="testimonials" className="py-20 px-4 bg-white">
+      <section
+        id="testimonials"
+        className="py-20 px-4 relative"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url(/images/testimonials-bg.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Lo Que Dicen Nuestros Usuarios</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-0 shadow-lg">
+            <Card className="border-0 shadow-lg card-hover">
               <CardContent className="pt-6">
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
@@ -206,7 +225,7 @@ export default function LandingPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-0 shadow-lg">
+            <Card className="border-0 shadow-lg card-hover">
               <CardContent className="pt-6">
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
@@ -229,7 +248,7 @@ export default function LandingPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-0 shadow-lg">
+            <Card className="border-0 shadow-lg card-hover">
               <CardContent className="pt-6">
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
@@ -256,8 +275,17 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-purple-600 to-blue-600">
-        <div className="container mx-auto text-center">
+      <section
+        className="py-20 px-4 relative overflow-hidden"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(147, 51, 234, 0.85), rgba(59, 130, 246, 0.85)), url(/images/cta-background.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <div className="container mx-auto text-center relative z-10">
           <h2 className="text-4xl font-bold text-white mb-6">Comienza Tu Viaje Hacia el Bienestar</h2>
           <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
             Únete a miles de personas que ya han mejorado su salud mental con Eunonia
