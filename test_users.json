@@ -1,0 +1,99 @@
+[
+  {
+    "id": "user_1",
+    "email": "admin@eunonia.com",
+    "user_type": "admin",
+    "first_name": "Ana",
+    "last_name": "Administradora",
+    "phone": "+1234567890",
+    "created_at": "2025-07-26T22:12:10.916426"
+  },
+  {
+    "id": "user_2",
+    "email": "dr.garcia@eunonia.com",
+    "user_type": "psychologist",
+    "first_name": "Mar\u00eda",
+    "last_name": "Garc\u00eda",
+    "phone": "+1234567891",
+    "created_at": "2025-07-26T22:12:10.916426",
+    "license_number": "PSY-2024-001",
+    "specializations": [
+      "Ansiedad",
+      "Depresi\u00f3n",
+      "Terapia Cognitivo-Conductual"
+    ],
+    "years_experience": 8,
+    "consultation_fee": 75.0,
+    "bio": "Especialista en trastornos de ansiedad y depresi\u00f3n con 8 a\u00f1os de experiencia."
+  },
+  {
+    "id": "user_3",
+    "email": "dr.ruiz@eunonia.com",
+    "user_type": "psychologist",
+    "first_name": "Carlos",
+    "last_name": "Ruiz",
+    "phone": "+1234567892",
+    "created_at": "2025-07-26T22:12:10.917569",
+    "license_number": "PSY-2024-002",
+    "specializations": [
+      "Trauma",
+      "PTSD",
+      "Terapia Familiar"
+    ],
+    "years_experience": 12,
+    "consultation_fee": 85.0,
+    "bio": "Experto en trauma y terapia familiar con m\u00e1s de 12 a\u00f1os de experiencia."
+  },
+  {
+    "id": "user_4",
+    "email": "juan.perez@email.com",
+    "user_type": "patient",
+    "first_name": "Juan",
+    "last_name": "P\u00e9rez",
+    "phone": "+1234567893",
+    "created_at": "2025-07-26T22:12:10.917569",
+    "date_of_birth": "1990-05-15",
+    "gender": "M",
+    "risk_level": "high",
+    "status": "active"
+  },
+  {
+    "id": "user_5",
+    "email": "maria.gonzalez@email.com",
+    "user_type": "patient",
+    "first_name": "Mar\u00eda",
+    "last_name": "Gonz\u00e1lez",
+    "phone": "+1234567894",
+    "created_at": "2025-07-26T22:12:10.917569",
+    "date_of_birth": "1985-08-22",
+    "gender": "F",
+    "risk_level": "high",
+    "status": "active"
+  },
+  {
+    "id": "user_6",
+    "email": "ana.martinez@email.com",
+    "user_type": "patient",
+    "first_name": "Ana",
+    "last_name": "Mart\u00ednez",
+    "phone": "+1234567895",
+    "created_at": "2025-07-26T22:12:10.917569",
+    "date_of_birth": "1992-12-03",
+    "gender": "F",
+    "risk_level": "low",
+    "status": "active"
+  },
+  {
+    "id": "user_7",
+    "email": "luis.garcia@email.com",
+    "user_type": "patient",
+    "first_name": "Luis",
+    "last_name": "Garc\u00eda",
+    "phone": "+1234567896",
+    "created_at": "2025-07-26T22:12:10.917569",
+    "date_of_birth": "1988-03-18",
+    "gender": "M",
+    "risk_level": "low",
+    "status": "active"
+  }
+]

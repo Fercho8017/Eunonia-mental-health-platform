@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,11 +9,16 @@ import { Progress } from "@/components/ui/progress"
 import { Brain, MessageCircle, Calendar, BarChart3, Heart, Smile, Frown, Meh, LogOut } from "lucide-react"
 import { ChatBot } from "@/components/chat-bot"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function PatientDashboard() {
   const [showChat, setShowChat] = useState(false)
   const [currentMood, setCurrentMood] = useState<"happy" | "neutral" | "sad" | null>(null)
+  const [userName, setUserName] = useState<string>("")
+  const [loading, setLoading] = useState<boolean>(true) // Estado para mostrar el cargando
+  const router = useRouter()
 
+  // Datos de ejemplo para la gráfica y citas
   const moodData = [
     { day: "Lun", mood: 7 },
     { day: "Mar", mood: 6 },
@@ -28,6 +34,39 @@ export default function PatientDashboard() {
     { id: 2, psychologist: "Dr. Carlos Ruiz", date: "2024-01-28", time: "2:00 PM", type: "Seguimiento" },
   ]
 
+  // Función para obtener el nombre del usuario logueado
+  const fetchUserProfile = async () => {
+    const userId = localStorage.getItem("user_id")
+    if (!userId) {
+      router.push("/auth/login")
+      return
+    }
+
+    const { data, error } = await supabase
+      .from("user_profiles")
+      .select("first_name")
+      .eq("id", userId)
+      .single()
+
+    if (error || !data) {
+      console.error("Error al obtener el perfil del usuario:", error)
+      router.push("/auth/login")
+      return
+    }
+
+    setUserName(data.first_name)
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    fetchUserProfile()
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem("user_id")
+    router.push("/auth/login")
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -37,7 +76,7 @@ export default function PatientDashboard() {
             <Brain className="h-8 w-8 text-purple-600" />
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Panel del Paciente</h1>
-              <p className="text-gray-600">Bienvenido de vuelta, Juan</p>
+              <p className="text-gray-600">Bienvenido de vuelta, {loading ? "Cargando..." : userName}</p>
             </div>
           </div>
           <div className="flex items-center space-x-4">
@@ -45,12 +84,10 @@ export default function PatientDashboard() {
               <MessageCircle className="h-4 w-4 mr-2" />
               Chat IA
             </Button>
-            <Link href="/auth/login">
-              <Button variant="outline">
-                <LogOut className="h-4 w-4 mr-2" />
-                Salir
-              </Button>
-            </Link>
+            <Button variant="outline" onClick={handleLogout}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Salir
+            </Button>
           </div>
         </div>
       </header>
@@ -104,8 +141,8 @@ export default function PatientDashboard() {
             </CardContent>
           </Card>
 
+          {/* Progress Overview */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-            {/* Progress Overview */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Progreso Semanal</CardTitle>

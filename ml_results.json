@@ -1,0 +1,118 @@
+{
+  "timestamp": "2025-07-27T01:00:30.257629",
+  "model_performance": {
+    "risk_classifier_accuracy": 0.933855421686747,
+    "mood_predictor_mse": 1.8669859210957824,
+    "mood_predictor_r2": 0.48811674874457744
+  },
+  "feature_importance": [
+    {
+      "feature": "mood_score",
+      "importance": 0.2627049111558033
+    },
+    {
+      "feature": "anxiety_level",
+      "importance": 0.2033285877190491
+    },
+    {
+      "feature": "anxiety_trend",
+      "importance": 0.12739669594853364
+    },
+    {
+      "feature": "mood_trend",
+      "importance": 0.11296987608739581
+    },
+    {
+      "feature": "social_interaction",
+      "importance": 0.11142196902423984
+    },
+    {
+      "feature": "sleep_hours",
+      "importance": 0.09561485462646406
+    },
+    {
+      "feature": "exercise_minutes",
+      "importance": 0.05983630554872466
+    },
+    {
+      "feature": "age",
+      "importance": 0.008859654598823728
+    },
+    {
+      "feature": "day_of_year",
+      "importance": 0.00785145298860979
+    },
+    {
+      "feature": "weekday",
+      "importance": 0.004789260395238414
+    },
+    {
+      "feature": "gender_encoded",
+      "importance": 0.002331054954709414
+    },
+    {
+      "feature": "therapy_sessions_week",
+      "importance": 0.001849547765875603
+    },
+    {
+      "feature": "on_medication",
+      "importance": 0.0010458291865326989
+    }
+  ],
+  "sample_prediction": {
+    "patient_data": {
+      "age": 35,
+      "mood_score": 4.5,
+      "anxiety_level": 7.2,
+      "sleep_hours": 5.5,
+      "exercise_minutes": 15,
+      "social_interaction": 0,
+      "on_medication": 1,
+      "therapy_sessions_week": 1,
+      "mood_trend": 4.8,
+      "anxiety_trend": 6.9,
+      "weekday": 1,
+      "day_of_year": 50,
+      "gender_encoded": 0
+    },
+    "risk_level": "medium",
+    "risk_probabilities": {
+      "high": 0.3721057770267662,
+      "low": 0.0002022014828730296,
+      "medium": 0.6276920214903609
+    },
+    "future_mood": 5.3,
+    "recommendations": [
+      {
+        "type": "monitoring",
+        "message": "Mant\u00e9n un seguimiento diario de tu estado de \u00e1nimo",
+        "priority": 2
+      },
+      {
+        "type": "activity",
+        "message": "Practica t\u00e9cnicas de mindfulness y respiraci\u00f3n profunda",
+        "priority": 2
+      },
+      {
+        "type": "anxiety",
+        "message": "Implementa t\u00e9cnicas de relajaci\u00f3n muscular progresiva",
+        "priority": 2
+      },
+      {
+        "type": "sleep",
+        "message": "Mejora tu higiene del sue\u00f1o - objetivo: 7-8 horas por noche",
+        "priority": 3
+      },
+      {
+        "type": "exercise",
+        "message": "Incrementa tu actividad f\u00edsica a 30 minutos diarios",
+        "priority": 3
+      },
+      {
+        "type": "social",
+        "message": "Busca oportunidades de interacci\u00f3n social positiva",
+        "priority": 3
+      }
+    ]
+  }
+}

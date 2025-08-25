@@ -1,47 +1,97 @@
-"use client"
+'use client'
 
-import type React from "react"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Brain, Eye, EyeOff } from "lucide-react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
+import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
+import bcrypt from 'bcryptjs'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Brain, Eye, EyeOff } from 'lucide-react'
+import Link from 'next/link'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [userType, setUserType] = useState("")
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [userType, setUserType] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setErrorMessage('')
 
-    // Simulate login process
-    setTimeout(() => {
-      // Redirect based on user type
-      switch (userType) {
-        case "patient":
-          router.push("/dashboard/patient")
+    if (!email || !password || !userType) {
+      setErrorMessage('Completa todos los campos para iniciar sesión.')
+      setIsLoading(false)
+      return
+    }
+
+    try {
+      const { data: users, error: fetchError } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('email', email)
+
+      if (fetchError) {
+        setErrorMessage('Error al buscar usuario.')
+        setIsLoading(false)
+        return
+      }
+      if (!users || users.length === 0) {
+        setErrorMessage('Usuario no encontrado.')
+        setIsLoading(false)
+        return
+      }
+
+      const user = users[0]
+      if (!user.hashed_password) {
+        setErrorMessage('No se encontró contraseña almacenada.')
+        setIsLoading(false)
+        return
+      }
+
+      const passwordMatch = await bcrypt.compare(password, user.hashed_password)
+      if (!passwordMatch) {
+        setErrorMessage('Contraseña incorrecta.')
+        setIsLoading(false)
+        return
+      }
+
+      if (user.user_type !== userType) {
+        setErrorMessage('El tipo de usuario no coincide.')
+        setIsLoading(false)
+        return
+      }
+
+      // Guardar sesión manualmente
+      localStorage.setItem('user_id', user.id)
+
+      switch (user.user_type) {
+        case 'patient':
+          router.push('/dashboard/patient')
           break
-        case "psychologist":
-          router.push("/dashboard/psychologist")
+        case 'psychologist':
+          router.push('/dashboard/psychologist')
           break
-        case "admin":
-          router.push("/dashboard/admin")
+        case 'admin':
+          router.push('/dashboard/admin')
           break
         default:
-          router.push("/dashboard/patient")
+          router.push('/')
       }
+
+    } catch (err) {
+      console.error(err)
+      setErrorMessage('Ocurrió un error al iniciar sesión.')
+    } finally {
       setIsLoading(false)
-    }, 1500)
+    }
   }
 
   return (
@@ -56,6 +106,7 @@ export default function LoginPage() {
           <CardDescription>Accede a tu cuenta para continuar con tu bienestar</CardDescription>
         </CardHeader>
         <CardContent>
+          {errorMessage && <div className="text-red-500 text-center mb-4">{errorMessage}</div>}
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Correo Electrónico</Label>
@@ -74,7 +125,7 @@ export default function LoginPage() {
               <div className="relative">
                 <Input
                   id="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -111,7 +162,7 @@ export default function LoginPage() {
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+              {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
             </Button>
           </form>
 

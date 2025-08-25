@@ -1,17 +1,30 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { Brain, Users, Clock, Bot, Play, ChevronDown } from "lucide-react"
+import { Brain, Users, Clock, Bot, ChevronDown } from "lucide-react"
 import Link from "next/link"
+import { countUsersByRole } from "@/lib/supabase"
 
 export function HeroWithVideo() {
   const [isVideoOpen, setIsVideoOpen] = useState(false)
+  const [pacientes, setPacientes] = useState<number | null>(null)
+  const [psicologos, setPsicologos] = useState<number | null>(null)
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const pacientesCount = await countUsersByRole("patient")
+      const psicologosCount = await countUsersByRole("psychologist")
+      setPacientes(pacientesCount)
+      setPsicologos(psicologosCount)
+    }
+
+    fetchStats()
+  }, [])
 
   const stats = [
-    { icon: Users, label: "Pacientes Atendidos", value: "1,000+" },
-    { icon: Brain, label: "Psicólogos Certificados", value: "50+" },
+    { icon: Users, label: "Pacientes Atendidos", value: pacientes ?? "..." },
+    { icon: Brain, label: "Psicólogos Certificados", value: psicologos ?? "..." },
     { icon: Clock, label: "Disponibilidad", value: "24/7" },
     { icon: Bot, label: "IA Avanzada", value: "GPT-4" },
   ]
@@ -57,32 +70,6 @@ export function HeroWithVideo() {
             <Button asChild size="lg" className="bg-white text-purple-600 hover:bg-blue-50 text-lg px-8 py-4">
               <Link href="/auth/register">Comenzar Ahora</Link>
             </Button>
-
-            <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-white text-white hover:bg-white hover:text-purple-600 text-lg px-8 py-4 backdrop-blur-sm bg-transparent"
-                >
-                  <Play className="mr-2 h-5 w-5" />
-                  Ver Demo
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-4xl">
-                <div className="aspect-video">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                    title="Eunonia Platform Demo"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </DialogContent>
-            </Dialog>
           </div>
 
           {/* Stats */}

@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js"
+import bcrypt from "bcryptjs"
 
-// Verificar que las variables de entorno estén disponibles
+// Validar variables de entorno
 if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
   throw new Error("Missing env.NEXT_PUBLIC_SUPABASE_URL")
 }
@@ -13,9 +14,11 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+// ——————————————
 // Tipos de datos
 export interface UserProfile {
   id: string
+  email: string
   first_name: string
   last_name: string
   user_type: "patient" | "psychologist" | "admin"
@@ -23,6 +26,7 @@ export interface UserProfile {
   date_of_birth?: string
   gender?: string
   emergency_contact?: any
+  hashed_password?: string
   created_at: string
   updated_at: string
 }
@@ -82,55 +86,75 @@ export interface MoodLog {
   created_at: string
 }
 
-// Funciones de autenticación
-export const signUp = async (email: string, password: string, userData: any) => {
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: userData,
-    },
-  })
+// ——————————————
+// Funciones de autenticación manual
+
+export const registerUser = async (
+  email: string,
+  password: string,
+  userData: Partial<UserProfile>
+) => {
+  const hashed_password = await bcrypt.hash(password, 10)
+
+  const { data, error } = await supabase
+    .from("user_profiles")
+    .insert([{ email, hashed_password, ...userData }])
+    .select()
+
   return { data, error }
 }
 
-export const signIn = async (email: string, password: string) => {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
-  return { data, error }
+export const loginUser = async (email: string, password: string) => {
+  const { data: user, error } = await supabase
+    .from("user_profiles")
+    .select("*")
+    .eq("email", email)
+    .single()
+
+  if (error) {
+    console.error("Error buscando usuario:", error)
+    return { user: null, error: "Usuario no encontrado." }
+  }
+
+  if (!user) {
+    console.warn("Usuario no encontrado con email:", email)
+    return { user: null, error: "Usuario no encontrado." }
+  }
+
+  const isValid = await bcrypt.compare(password, user.hashed_password)
+  if (!isValid) {
+    return { user: null, error: "Contraseña incorrecta." }
+  }
+
+  delete user.hashed_password
+
+  return { user, error: null }
 }
 
-export const signOut = async () => {
-  const { error } = await supabase.auth.signOut()
-  return { error }
-}
 
-export const getCurrentUser = async () => {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  return user
-}
-
-// Funciones para perfiles de usuario
-export const createUserProfile = async (profile: Partial<UserProfile>) => {
-  const { data, error } = await supabase.from("user_profiles").insert([profile]).select()
-  return { data, error }
-}
-
+// Obtener usuario por id
 export const getUserProfile = async (userId: string) => {
-  const { data, error } = await supabase.from("user_profiles").select("*").eq("id", userId).single()
+  const { data, error } = await supabase
+    .from("user_profiles")
+    .select("*")
+    .eq("id", userId)
+    .single()
   return { data, error }
 }
 
+// Actualizar perfil usuario
 export const updateUserProfile = async (userId: string, updates: Partial<UserProfile>) => {
-  const { data, error } = await supabase.from("user_profiles").update(updates).eq("id", userId).select()
+  const { data, error } = await supabase
+    .from("user_profiles")
+    .update(updates)
+    .eq("id", userId)
+    .select()
   return { data, error }
 }
 
+// ——————————————
 // Funciones para pacientes
+
 export const createPatient = async (patient: Partial<Patient>) => {
   const { data, error } = await supabase.from("patients").insert([patient]).select()
   return { data, error }
@@ -160,11 +184,17 @@ export const getPatientsByPsychologist = async (psychologistId: string) => {
 }
 
 export const updatePatient = async (patientId: string, updates: Partial<Patient>) => {
-  const { data, error } = await supabase.from("patients").update(updates).eq("id", patientId).select()
+  const { data, error } = await supabase
+    .from("patients")
+    .update(updates)
+    .eq("id", patientId)
+    .select()
   return { data, error }
 }
 
+// ——————————————
 // Funciones para psicólogos
+
 export const createPsychologist = async (psychologist: Partial<Psychologist>) => {
   const { data, error } = await supabase.from("psychologists").insert([psychologist]).select()
   return { data, error }
@@ -183,14 +213,18 @@ export const getPsychologist = async (psychologistId: string) => {
 }
 
 export const getAllPsychologists = async () => {
-  const { data, error } = await supabase.from("psychologists").select(`
+  const { data, error } = await supabase
+    .from("psychologists")
+    .select(`
       *,
       user_profiles (*)
     `)
   return { data, error }
 }
 
+// ——————————————
 // Funciones para sesiones de terapia
+
 export const createTherapySession = async (session: Partial<TherapySession>) => {
   const { data, error } = await supabase.from("therapy_sessions").insert([session]).select()
   return { data, error }
@@ -217,33 +251,47 @@ export const getTherapySessions = async (userId: string, userType: string) => {
 }
 
 export const updateTherapySession = async (sessionId: string, updates: Partial<TherapySession>) => {
-  const { data, error } = await supabase.from("therapy_sessions").update(updates).eq("id", sessionId).select()
+  const { data, error } = await supabase
+    .from("therapy_sessions")
+    .update(updates)
+    .eq("id", sessionId)
+    .select()
   return { data, error }
 }
 
+// ——————————————
 // Funciones para registros de estado de ánimo
+
 export const createMoodLog = async (moodLog: Partial<MoodLog>) => {
   const { data, error } = await supabase.from("mood_logs").insert([moodLog]).select()
   return { data, error }
 }
 
 export const getMoodLogs = async (patientId: string, limit?: number) => {
-  let query = supabase.from("mood_logs").select("*").eq("patient_id", patientId).order("log_date", { ascending: false })
+  let query = supabase
+    .from("mood_logs")
+    .select("*")
+    .eq("patient_id", patientId)
+    .order("log_date", { ascending: false })
 
-  if (limit) {
-    query = query.limit(limit)
-  }
+  if (limit) query = query.limit(limit)
 
   const { data, error } = await query
   return { data, error }
 }
 
 export const updateMoodLog = async (logId: string, updates: Partial<MoodLog>) => {
-  const { data, error } = await supabase.from("mood_logs").update(updates).eq("id", logId).select()
+  const { data, error } = await supabase
+    .from("mood_logs")
+    .update(updates)
+    .eq("id", logId)
+    .select()
   return { data, error }
 }
 
-// Funciones de estadísticas
+// ——————————————
+// Funciones de estadísticas por usuario
+
 export const getPatientStats = async (patientId: string) => {
   const { data: moodData, error: moodError } = await supabase
     .from("mood_logs")
@@ -259,11 +307,7 @@ export const getPatientStats = async (patientId: string) => {
     .order("session_date", { ascending: false })
     .limit(10)
 
-  return {
-    moodData,
-    sessionData,
-    errors: { moodError, sessionError },
-  }
+  return { moodData, sessionData, errors: { moodError, sessionError } }
 }
 
 export const getPsychologistStats = async (psychologistId: string) => {
@@ -272,15 +316,30 @@ export const getPsychologistStats = async (psychologistId: string) => {
     .select("id, risk_level, status")
     .eq("assigned_psychologist", psychologistId)
 
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
   const { data: sessions, error: sessionsError } = await supabase
     .from("therapy_sessions")
     .select("session_date, status, therapist_rating")
     .eq("psychologist_id", psychologistId)
-    .gte("session_date", new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
+    .gte("session_date", thirtyDaysAgo)
 
-  return {
-    patients,
-    sessions,
-    errors: { patientsError, sessionsError },
+  return { patients, sessions, errors: { patientsError, sessionsError } }
+}
+
+// ——————————————
+// Contar usuarios por rol
+
+export const countUsersByRole = async (
+  role: "patient" | "psychologist"
+): Promise<number> => {
+  const { count, error } = await supabase
+    .from("user_profiles")
+    .select("*", { count: "exact", head: true })
+    .eq("user_type", role)
+
+  if (error) {
+    console.error("Error contando usuarios por rol:", error)
+    return 0
   }
+  return count ?? 0
 }
